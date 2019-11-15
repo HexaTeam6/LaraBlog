@@ -18,6 +18,9 @@
     <link href="{{ asset('assets/frontend/css/ionicons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/frontend/css/swiper.css') }}" rel="stylesheet">
 
+    {{--Toastr--}}
+    <link href="{{asset('assets/toastr.min.css')}}" rel="stylesheet" >
+
     @stack('css')
 </head>
 <body>
@@ -30,6 +33,20 @@
 <script src="{{ asset('assets/frontend/js/jquery-3.1.1.min.js') }}"></script>
 <script src="{{ asset('assets/frontend/js/tether.min.js') }}"></script>
 <script src="{{ asset('assets/frontend/js/bootstrap.js') }}"></script>
+{{--Toastr--}}
+<script src="{{asset('assets/toastr.min.js')}}"></script>
+{!! Toastr::message() !!}
+
+<script>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            toastr.error('{{ $error }}', 'Error', {
+        closeButton: true,
+        progressBar: true,
+    });
+    @endforeach
+    @endif
+</script>
 @stack('js')
 </body>
 </html>

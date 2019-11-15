@@ -40,6 +40,12 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="{{ Request::is('admin/tag*')? 'active' : '' }}">
+                    <a href="{{ route('admin.tag.index') }}">
+                        <i class="material-icons">label</i>
+                        <span>Tag</span>
+                    </a>
+                </li>
             @endif
             @if(Request::is('author*'))
                 <li class="{{ Request::is('author/dashboard')? 'active' : '' }}">
