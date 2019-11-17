@@ -1,6 +1,6 @@
 @extends('layouts.backend.app')
 
-@section('title', 'Category')
+@section('title', 'Post')
 
 @push('css')
 <!-- JQuery DataTable Css -->
@@ -10,9 +10,9 @@
 @section('content')
     <div class="container-fluid">
         <div class="block-header">
-            <a class="btn btn-primary waves-effect" href="{{route('admin.category.create')}}">
+            <a class="btn btn-primary waves-effect" href="{{route('admin.post.create')}}">
                 <i class="material-icons">add</i>
-                <span>Add New Category</span>
+                <span>Add New Post</span>
             </a>
         </div>
         <!-- Exportable Table -->
@@ -21,8 +21,8 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            All Category
-                            <span class="badge bg-blue">{{$categories->count()}}</span>
+                            All Post
+                            <span class="badge bg-blue">{{$posts->count()}}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -31,30 +31,51 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Post Count</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th><i class="material-icons">visibility</i></th>
+                                    <th>Is Approved</th>
+                                    <th>Status</th>
                                     <th>Created at</th>
-                                    <th>Updated at</th>
+                                    {{--<th>Updated at</th>--}}
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($categories as $category)
+                                    @foreach($posts as $post)
                                         <tr>
-                                            <td>{{$category->id}}</td>
-                                            <td>{{$category->name}}</td>
-                                            <td>{{$category->posts()->count()}}</td>
-                                            <td>{{$category->created_at}}</td>
-                                            <td>{{$category->updated_at}}</td>
+                                            <td>{{$post->id}}</td>
+                                            <td>{{str_limit($post->title, 10)}}</td>
+                                            <td>{{$post->user->name}}</td>
+                                            <td>{{$post->view_count}}</td>
                                             <td>
-                                                <a href="{{route('admin.category.edit',$category->id)}}" class="btn btn-warning waves-effect">
+                                                @if($post->is_approved == true)
+                                                    <span class="badge bg-blue">Approved</span>
+                                                @else
+                                                    <span class="badge bg-pink">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($post->is_approved == true)
+                                                    <span class="badge bg-blue">Published</span>
+                                                @else
+                                                    <span class="badge bg-pink">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td>{{$post->created_at}}</td>
+                                            {{--<td>{{$post->updated_at}}</td>--}}
+                                            <td>
+                                                <a href="{{route('admin.post.show',$post->id)}}" class="btn btn-success waves-effect">
+                                                    <i class="material-icons">visibility</i>
+                                                </a>
+                                                <a href="{{route('admin.post.edit',$post->id)}}" class="btn btn-warning waves-effect">
                                                     <i class="material-icons">edit</i>
                                                 </a>
-                                                <button class="btn btn-danger waves-effect" type="button" onclick="deleteCategory({{$category->id}})">
+                                                <button class="btn btn-danger waves-effect" type="button" onclick="deletePost({{$post->id}})">
                                                     <i class="material-icons">delete</i>
                                                 </button>
-                                                <form id="delete-form-{{$category->id}}"
-                                                      action="{{route('admin.category.destroy', $category->id)}}"
+                                                <form id="delete-form-{{$post->id}}"
+                                                      action="{{route('admin.post.destroy', $post->id)}}"
                                                       method="post" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
@@ -90,7 +111,7 @@
 
 <script src="{{asset('assets/sweetalert2.all.js')}}"></script>
 <script type="text/javascript">
-    function deleteCategory(id) {
+    function deletePost(id) {
         swal({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -109,7 +130,7 @@
         ) {
             swal(
                 'Cancelled',
-                'Category data is safe :)',
+                'Post data is safe :)',
                 'error'
             )
         }
