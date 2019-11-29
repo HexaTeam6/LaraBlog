@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    <a class="btn btn-danger waves-effect" href="{{ route('admin.post.index') }}">BACK</a>
+    <a class="btn btn-danger waves-effect" href="{{ route('author.post.index') }}">BACK</a>
     @if($post->is_approved == false)
         <button type="button" class="btn btn-success pull-right">
             <i class="material-icons">done</i>
