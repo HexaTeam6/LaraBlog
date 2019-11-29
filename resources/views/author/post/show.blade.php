@@ -8,9 +8,9 @@
 @section('content')
     <a class="btn btn-danger waves-effect" href="{{ route('author.post.index') }}">BACK</a>
     @if($post->is_approved == false)
-        <button type="button" class="btn btn-success pull-right">
+        <button type="button" class="btn btn-success pull-right" disabled>
             <i class="material-icons">done</i>
-            <span>Approved</span>
+            <span>Approve</span>
         </button>
     @else
         <button type="button" class="btn btn-success pull-right" disabled>

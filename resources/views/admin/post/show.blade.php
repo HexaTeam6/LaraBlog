@@ -8,10 +8,15 @@
 @section('content')
     <a class="btn btn-danger waves-effect" href="{{ route('admin.post.index') }}">BACK</a>
     @if($post->is_approved == false)
-        <button type="button" class="btn btn-success pull-right">
+        <button type="button" class="btn btn-success waves-effect pull-right" onclick="approvePost({{ $post->id }})">
             <i class="material-icons">done</i>
-            <span>Approved</span>
+            <span>Approve</span>
         </button>
+
+        <form method="POST" action="{{ route('admin.post.approve', $post->id) }}" id="approval-form" style="display: none">
+            @csrf
+            @method('PUT')
+        </form>
     @else
         <button type="button" class="btn btn-success pull-right" disabled>
             <i class="material-icons">done</i>
@@ -76,4 +81,32 @@
 @endsection
 
 @push('js')
+<script src="{{asset('assets/sweetalert2.all.js')}}"></script>
+<script type="text/javascript">
+    function approvePost(id) {
+        swal({
+            title: 'Are you sure?',
+            text: "You went approve this post!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, approve it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+            event.preventDefault();
+            document.getElementById('approval-form').submit();
+        } else if (
+                /* Read more about handling dismissals below */
+        result.dismiss === swal.DismissReason.cancel
+        ) {
+            swal(
+                'Cancelled',
+                'The post remain pending :)',
+                'info'
+            )
+        }
+    })
+    }
+</script>
 @endpush
