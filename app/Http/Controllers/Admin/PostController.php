@@ -96,7 +96,7 @@ class PostController extends Controller
         foreach ($subscribers as $subscriber){
             Notification::route('mail', $subscriber->email)
                 ->notify(new NewPostNotify($post));
-            sleep(5);
+//            sleep(5);
         }
 
         Toastr::success('Post successfully saved', 'Success');
@@ -203,7 +203,7 @@ class PostController extends Controller
             foreach ($subscribers as $subscriber){
                 Notification::route('mail', $subscriber->email)
                     ->notify(new NewPostNotify($post));
-                sleep(5);
+//                sleep(5);
             }
 
             Toastr::success('Post successfully approved', 'Success');
